@@ -73,7 +73,7 @@ def to_canonical_WA(df, nodes_dict):
                      df['request'].apply(pd.Series).add_prefix('request_').reset_index(drop=True),
                      pd.DataFrame(df['response']
                                   .tolist()).add_prefix('response_')], axis=1)
-        df1['request_input'] = pd.io.json.json_normalize(df['request'])['input.text']
+        df1['request_input'] = pd.json_normalize(df['request'])['input.text']
         df2 = pd.concat([df1.drop(['response_context', 'response_output'], axis=1), df1['response_context'].apply(pd.Series).add_prefix('response_context_'), pd.DataFrame(df1['response_output'].tolist()).add_prefix('response_output_')], axis=1)
         df3 = pd.concat([df2.drop(['response_context_system'], axis=1), df2['response_context_system'].apply(pd.Series).add_prefix('response_context_system_')], axis=1)
 
@@ -290,7 +290,7 @@ def to_canonical_WA_v2(df, wa_skills=None, skill_id_field=None, include_nodes_vi
             pd.DataFrame(df['request'].tolist()).add_prefix('request_'),
             pd.DataFrame(df['response'].tolist()).add_prefix('response_')], axis=1)
     #parse request_input
-    df1['request_input'] = pd.io.json.json_normalize(df['request'])['input.text']
+    df1['request_input'] = pd.json_normalize(df['request'])['input.text']
     
     #expand the request_context and response_output into additional columns
     df2 = pd.concat([df1.drop(['response_context', 'response_output'], axis=1), 
